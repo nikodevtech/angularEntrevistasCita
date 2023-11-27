@@ -1,0 +1,79 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card text-center p-3">
+        <div class="card-body">
+          <i class="bi bi-calendar4-week fs-1"></i>
+          <h3>
+            {{ titulo }}
+            <div *ngIf="loading" class="spinner-border float-end" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </h3>
+          <span *ngIf="submitted && createCita.invalid" class="badge bg-danger">Todos los campos son obligatorios y la hora debe estar entre las 10:00 y las 14:00
+          </span>
+          <form class="mt-4" [formGroup]="createCita" (ngSubmit)="agregarEditarCita()">
+            <div class="row">
+              <div class="col-12 mt-2">
+                <label class="form-label me-2">Será entrevistado por: </label>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="entrevistadoPorA"
+                    value="A"
+                    formControlName="entrevistadoPor"
+                    required
+                  />
+                  <label class="form-check-label" for="entrevistadoPorA">A</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="entrevistadoPorB"
+                    value="B"
+                    formControlName="entrevistadoPor"
+                    required
+                  />
+                  <label class="form-check-label" for="entrevistadoPorB">B</label>
+                </div>
+              </div>
+              <div class="col-12 mt-2">
+                <label for="cliente" class="form-label">Cliente</label>
+                <select id="cliente" class="form-select form-select-md" formControlName="cliente" required>
+                  <option *ngFor="let cliente of listaClientes" [value]="cliente.id">
+                    {{ cliente.nombre}} - DNI: {{ cliente.dni }} - Teléfono: {{ cliente.telefono }} - Email: {{ cliente.email }}
+                  </option>
+                </select>
+              </div>
+              <div class="col mt-4">
+                <label for="fechaalquiler" class="form-label">Dia de la cita</label>
+                <input class="form-control form-control-lg" type="date" formControlName="diaCita"/> 
+              </div>
+              <div class="col mt-4">
+                <label for="horacita" class="form-label">Hora de la cita</label>
+                <input class="form-control form-control-lg" id="horaCita" type="time" formControlName="horaCita"
+                       [min]="'10:00'" [max]="'14:00'" />
+                <div *ngIf="createCita.get('horaCita')?.hasError('time')" class="text-danger">
+                  Formato de hora inválido.
+                </div>
+                <div *ngIf="createCita.get('horaCita')?.hasError('fueraDeRango')" class="text-danger">
+                  La hora debe estar entre las 10:00 y las 14:00.
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button type="text" class="btn btn-dark btn-lg btn-block me-3" routerLink="/citas/listado">
+                Volver
+              </button>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                {{ textoButton }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
