@@ -91,7 +91,7 @@ export class NotificacionesService {
           // Muestra una notificación de éxito
           '¡Acción completada!',
           `${elementoEliminar} se ha eliminado con exito.`,
-          'success'
+          'error'
         );
       }
     });
