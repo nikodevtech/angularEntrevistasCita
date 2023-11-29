@@ -89,21 +89,17 @@ export class ListaCitasComponent {
   /**
    * Actualiza el array de citas en el cliente después de eliminar una cita.
    * @param {string} idCliente - Identificador del cliente.
-   * @param {string} idCita - Identificador de la cita eliminada.
+   * @param {string} idCita - Identificador de la cita a eliminar.
    */
   private actualizarArrayCitasCliente(idCliente: string, idCita: string) {
     const cliente = this.listaClientes.find(
       (cliente) => cliente.id === idCliente
     );
-    console.log(cliente);
     if (cliente && cliente.arrayCitasCliente) {
       // Eliminar el ID de la cita del array de citas del cliente
       cliente.arrayCitasCliente = cliente.arrayCitasCliente.filter(
         (id) => id !== idCita
       );
-      cliente.arrayCitasCliente.forEach((element) => {
-        console.log(element);
-      });
       // Actualizar el cliente en la base de datos
       this._firebaseService.actualizar('clientes', idCliente, {
         arrayCitasCliente: cliente.arrayCitasCliente,

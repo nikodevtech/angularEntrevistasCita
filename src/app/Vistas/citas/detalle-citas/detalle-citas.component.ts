@@ -116,7 +116,6 @@ export class DetalleCitasComponent {
       .actualizar('citas', id, cita)
       .then(() => {
         this.loading = false;
-        this.actualizarCitaEnCliente(id, cita.idCliente);
         this._notificacionesService.notificacionModificacion('La cita');
         this.router.navigate(['/citas/listado']);
       })
