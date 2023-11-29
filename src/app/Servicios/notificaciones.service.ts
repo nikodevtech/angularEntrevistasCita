@@ -36,7 +36,7 @@ export class NotificacionesService {
    */
   notificacionModificacion(elementoAnotificar: string) {
     Swal.fire({
-      title: `${elementoAnotificar} se ha registrado con exito`,
+      title: `${elementoAnotificar} se ha modificadocon exito`,
       text: `${elementoAnotificar} modificado`,
       icon: 'info',
     });

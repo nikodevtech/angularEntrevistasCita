@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { AgendaDiaria } from 'src/app/Modelos/agenda-diaria';
 import { Cita } from 'src/app/Modelos/cita';
 import { FirebaseService } from 'src/app/Servicios/firebase.service';
@@ -8,26 +9,16 @@ import { NotificacionesService } from 'src/app/Servicios/notificaciones.service'
 @Component({
   selector: 'app-contenedor-agenda',
   templateUrl: './contenedor-agenda.component.html',
-  styleUrls: ['./contenedor-agenda.component.css']
+  styleUrls: ['./contenedor-agenda.component.css'],
 })
 export class ContenedorAgendaComponent {
-  agendaForm: FormGroup;
   listaCitas: Cita[] = [];
+  agenda: AgendaDiaria = {};
 
   constructor(
-    private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
     private notificacionesService: NotificacionesService
-  ) {
-    this.agendaForm = this.formBuilder.group({
-      dia: ['', Validators.required],
-      hora: ['', Validators.required],
-      cita1: [''],
-      cita2: [''],
-      cita3: [''],
-      cita4: ['']
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getCitas();
@@ -35,11 +26,11 @@ export class ContenedorAgendaComponent {
 
   getCitas() {
     const fechaHoy = new Date();
-    console.log(fechaHoy.getDate())
     const fechaManana = new Date();
     fechaManana.setDate(fechaHoy.getDate() + 1); // Obtener citas para el día siguiente
     const diaManana = fechaManana.toISOString().split('T')[0];
-    console.log(diaManana)
+
+    this.listaCitas = [];
 
     this.firebaseService
       .obtenerPorFiltro('citas', 'diaCita', diaManana)
@@ -50,23 +41,28 @@ export class ContenedorAgendaComponent {
             ...element.payload.doc.data(),
           } as Cita);
         });
-      })
+
+        // Llenar la agenda con las 4 primeras citas obtenidas o con las disponibles
+        this.agenda = {
+          cita1: this.listaCitas[0],
+          cita2: this.listaCitas[1],
+          cita3: this.listaCitas[2],
+          cita4: this.listaCitas[3],
+        };
+       
+      });
+      
+  }
+  marcarComoVisto(cita: Cita) {
+    cita.visto = !cita.visto;  
+    this.firebaseService.actualizar('citas', cita.id!, cita).then(() => {
+      this.notificacionesService.notificacionModificacion('La cita');
+      this.listaCitas = [];
+    });
   }
 
-  asignarCita() {
-    // Validar si hay datos suficientes para asignar la cita en la agenda
-    if (this.agendaForm.valid) {
-      const agenda: AgendaDiaria = {
-        cita1: this.agendaForm.value.cita1 || null,
-        cita2: this.agendaForm.value.cita2 || null,
-        cita3: this.agendaForm.value.cita3 || null,
-        cita4: this.agendaForm.value.cita4 || null,
-      };
-
-      // Lógica para asignar la agenda en Firebase
-      this.firebaseService.insertar('agendaDiaria', agenda);
-
-      this.notificacionesService.notificacionRegistrar('agenda');
-    }
+  guardarAgendaDiaria() {
+    this.firebaseService.insertar('agendaDiaria', this.agenda);
+    this.notificacionesService.notificacionRegistrar('agenda');
   }
 }

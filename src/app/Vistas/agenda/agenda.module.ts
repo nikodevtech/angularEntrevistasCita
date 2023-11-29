@@ -5,7 +5,6 @@ import { AgendaRoutingModule } from './agenda-routing.module';
 import { ContenedorAgendaComponent } from './contenedor-agenda/contenedor-agenda.component';
 import { ListaAgendaComponent } from './lista-agenda/lista-agenda.component';
 import { DetalleAgendaComponent } from './detalle-agenda/detalle-agenda.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     AgendaRoutingModule,
-    ReactiveFormsModule
   ]
 })
 export class AgendaModule { }

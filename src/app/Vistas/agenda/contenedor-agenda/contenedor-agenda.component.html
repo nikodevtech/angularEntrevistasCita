@@ -1,25 +1,51 @@
 <div class="container mt-5">
-    <div class="row ">
-      <div class="col-lg-8 offset-lg-2">
-        <div class="card text-center p-3  bg-secondary-subtle">
-          <div class="card-body">
-            <i class="bi bi-journal-text fs-1"></i>
-            <h3>Agenda Diaria</h3>
-            <div class="row">
-              <div class="col-12 mt-2">
-                <h5 class="mb-4">Citas para el día siguiente</h5>
-                <div class="row">
-                  <div *ngFor="let cita of listaCitas" class="col-md-6 mb-3">
-                    <div class="card border-primary border-2 bg-primary-subtle shadow h-100 p-3">
-                      <div class="card-body">
-                        <p class="card-text text-muted"><b>Entrevistador: {{ cita.entrevistadoPor }}</b></p>
-                        <p class="card-text text-muted"><b>DNI del cliente: {{ cita.clienteData.dniCliente }}</b></p>
-                        <p class="card-text text-muted"><b>Nombre del cliente: {{ cita.clienteData.nombreCliente }}</b></p>
-                        <p class="card-text text-"><b>Dia: {{ cita.diaCita | date : 'dd/MM/yyyy' }}</b></p>
-                        <p class="card-text"><b>Hora: {{ cita.horaCita }}</b></p>
-                        <label class="form-label me-2" for="visto"><b>Visto:</b></label>
-                        <input class="form-check-input text-muted fs-5" type="checkbox" name="visto" id="visto" [checked]="cita.visto">
-                      </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card p-3 bg-secondary-subtle">
+        <div class="card-body">        
+          <div class="row">
+            <div class="col-12 mt-2">
+              <button
+              type="button"
+              class="btn btn-dark float-end p-2"
+              (click)="guardarAgendaDiaria()"
+            >
+              <i class="bi bi-journal-text fs-5"> Guardar</i>
+            </button>
+              <h3>Agenda Diaria</h3>
+              <h5 class="mb-4">Citas para el día siguiente</h5>
+              <div class="row">
+                <div *ngFor="let cita of listaCitas" class="col-md-6 mb-3">
+                  <div
+                    class="card border-primary border-2 bg-primary-subtle shadow h-100 p-3"
+                  >
+                    <div class="card-body">
+                      <p class="card-text text-muted">
+                        <b>Entrevistador: {{ cita.entrevistadoPor }}</b>
+                      </p>
+                      <p class="card-text text-muted">
+                        <b>DNI del cliente: {{ cita.clienteData.dniCliente }}</b>
+                      </p>
+                      <p class="card-text text-muted">
+                        <b>Nombre del cliente:{{ cita.clienteData.nombreCliente }}</b>
+                      </p>
+                      <p class="card-text text-">
+                        <b>Dia: {{ cita.diaCita | date : "dd/MM/yyyy" }}</b>
+                      </p>
+                      <p class="card-text">
+                        <b>Hora: {{ cita.horaCita }}</b>
+                      </p>
+                      <label class="form-label me-2" for="visto">
+                        <b>Visto:</b>
+                      </label>
+                      <input
+                        class="form-check-input text-muted fs-5"
+                        type="checkbox"
+                        name="visto"
+                        id="visto"
+                        [checked]="cita.visto"
+                        (change)="marcarComoVisto(cita)"
+                      />
                     </div>
                   </div>
                 </div>
@@ -30,4 +56,4 @@
       </div>
     </div>
   </div>
-  
+</div>
