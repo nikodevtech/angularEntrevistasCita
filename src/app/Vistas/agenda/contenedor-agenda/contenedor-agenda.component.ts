@@ -49,20 +49,27 @@ export class ContenedorAgendaComponent {
           cita3: this.listaCitas[2],
           cita4: this.listaCitas[3],
         };
-       
+        // Filtrar solo las citas definidas (eliminar las citas indefinidas)
+        this.agenda = Object.fromEntries(
+          Object.entries(this.agenda).filter(
+            ([key, value]) => value !== undefined
+          )
+        );
       });
-      
   }
   marcarComoVisto(cita: Cita) {
-    cita.visto = !cita.visto;  
+    cita.visto = !cita.visto;
     this.firebaseService.actualizar('citas', cita.id!, cita).then(() => {
-      this.notificacionesService.notificacionModificacion('La cita');
       this.listaCitas = [];
     });
   }
 
   guardarAgendaDiaria() {
-    this.firebaseService.insertar('agendaDiaria', this.agenda);
-    this.notificacionesService.notificacionRegistrar('agenda');
+    if (Object.keys(this.agenda).length > 0) {
+      this.firebaseService.insertar('agendaDiaria', this.agenda);
+      this.notificacionesService.notificacionRegistrar('agenda');
+    } else {
+      console.error('No hay citas definidas en la agenda para guardar.');
+    }
   }
 }

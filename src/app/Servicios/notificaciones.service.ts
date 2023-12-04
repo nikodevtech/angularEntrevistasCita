@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FirebaseApp } from '@angular/fire/app';
 import Swal from 'sweetalert2';
 import { FirebaseService } from './firebase.service';
 import { Cliente } from '../Modelos/cliente';
@@ -36,8 +35,8 @@ export class NotificacionesService {
    */
   notificacionModificacion(elementoAnotificar: string) {
     Swal.fire({
-      title: `${elementoAnotificar} se ha modificadocon exito`,
-      text: `${elementoAnotificar} modificado`,
+      title: `${elementoAnotificar} se ha modificado con exito`,
+      text: `${elementoAnotificar} se ha modificado`,
       icon: 'info',
     });
   }
@@ -49,7 +48,7 @@ export class NotificacionesService {
   notificacionRegistrar(elementoAnotificar: string) {
     Swal.fire({
       title: `${elementoAnotificar} se ha registrado con exito`,
-      text: `${elementoAnotificar} registrado`,
+      text: `${elementoAnotificar} se ha registrado`,
       icon: 'success',
     });
   }
